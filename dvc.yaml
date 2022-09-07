@@ -1,0 +1,24 @@
+stages:
+    collect_data:
+        cmd: python src/collect_data.py
+        params:
+            - collect_data
+        deps:
+            - src/collect_data.py
+        outs:
+            - data/data.json
+    preprocess:
+        foreach: ${preprocess.na_strategies}
+        do:
+            cmd: python src/preprocess.py ${item}
+            params:
+                - preprocess
+                - target
+            deps:
+                - src/preprocess.py
+                - data/data.json
+                - data/geocoded_areas.csv
+            outs:
+#                 - artifacts/preprocess/enrich_administrative_areas_${item}.csv
+                - artifacts/preprocess/metadata_${item}.json
+                - artifacts/preprocess/data_${item}.csv

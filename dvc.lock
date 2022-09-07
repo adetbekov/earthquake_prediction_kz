@@ -1,0 +1,125 @@
+schema: '2.0'
+stages:
+  collect_data:
+    cmd: python src/collect_data.py
+    deps:
+    - path: src/collect_data.py
+      md5: 9d2a62553b1243284cc2c597daae9832
+      size: 1009
+    params:
+      params.yaml:
+        collect_data:
+          endtime: '2022-09-01'
+          maxlatitude: 55.588
+          minlatitude: 40.459
+          maxlongitude: 87.012
+          minlongitude: 46.055
+    outs:
+    - path: data/data.json
+      md5: cc91705781ba4fdfd977a4b1c27a2b5a
+      size: 3957486
+  preprocess@zero:
+    cmd: python src/preprocess.py zero
+    deps:
+    - path: data/data.json
+      md5: cc91705781ba4fdfd977a4b1c27a2b5a
+      size: 3957486
+    - path: data/geocoded_areas.csv
+      md5: d3f1fce283b88b6438b50f3dec561a9e
+      size: 14726
+    - path: src/preprocess.py
+      md5: 74d577e7eab8696eacb4e6a1e363a743
+      size: 6750
+    params:
+      params.yaml:
+        preprocess:
+          na_strategies:
+          - zero
+          - min
+          - mean
+          roll_years_agg:
+          - 3
+          - 10
+          - 25
+          - 50
+          - 80
+          - 100
+        target:
+          mag_max_target_th: 5
+    outs:
+    - path: artifacts/preprocess/data_zero.csv
+      md5: c8472f3e6d15c231d7ecba58f2e2e2d5
+      size: 1663989
+    - path: artifacts/preprocess/metadata_zero.json
+      md5: a5d125f8167bec91b08acf20fad687ed
+      size: 1458
+  preprocess@min:
+    cmd: python src/preprocess.py min
+    deps:
+    - path: data/data.json
+      md5: cc91705781ba4fdfd977a4b1c27a2b5a
+      size: 3957486
+    - path: data/geocoded_areas.csv
+      md5: d3f1fce283b88b6438b50f3dec561a9e
+      size: 14726
+    - path: src/preprocess.py
+      md5: 74d577e7eab8696eacb4e6a1e363a743
+      size: 6750
+    params:
+      params.yaml:
+        preprocess:
+          na_strategies:
+          - zero
+          - min
+          - mean
+          roll_years_agg:
+          - 3
+          - 10
+          - 25
+          - 50
+          - 80
+          - 100
+        target:
+          mag_max_target_th: 5
+    outs:
+    - path: artifacts/preprocess/data_min.csv
+      md5: f81292d4c707097901437ebca60f2d8f
+      size: 1662427
+    - path: artifacts/preprocess/metadata_min.json
+      md5: a5d125f8167bec91b08acf20fad687ed
+      size: 1458
+  preprocess@mean:
+    cmd: python src/preprocess.py mean
+    deps:
+    - path: data/data.json
+      md5: cc91705781ba4fdfd977a4b1c27a2b5a
+      size: 3957486
+    - path: data/geocoded_areas.csv
+      md5: d3f1fce283b88b6438b50f3dec561a9e
+      size: 14726
+    - path: src/preprocess.py
+      md5: 74d577e7eab8696eacb4e6a1e363a743
+      size: 6750
+    params:
+      params.yaml:
+        preprocess:
+          na_strategies:
+          - zero
+          - min
+          - mean
+          roll_years_agg:
+          - 3
+          - 10
+          - 25
+          - 50
+          - 80
+          - 100
+        target:
+          mag_max_target_th: 5
+    outs:
+    - path: artifacts/preprocess/data_mean.csv
+      md5: 7393b49d019e455a53557a4360afcce7
+      size: 3641022
+    - path: artifacts/preprocess/metadata_mean.json
+      md5: f410d7db09e9d0fd17b7105ff75a5c93
+      size: 1459

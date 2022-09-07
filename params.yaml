@@ -1,0 +1,13 @@
+collect_data:
+    endtime: "2022-09-01"
+    maxlatitude: 55.588 
+    minlatitude: 40.459
+    maxlongitude: 87.012
+    minlongitude: 46.055
+
+target:
+    mag_max_target_th: 5
+
+preprocess:
+    na_strategies: ["zero", "min", "mean"]
+    roll_years_agg: [3, 10, 25, 50, 80, 100]
