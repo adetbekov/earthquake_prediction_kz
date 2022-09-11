@@ -1,12 +1,12 @@
 seed: 42
 
 collect_data:
-    endtime: "2022-06-01"
+    endtime: "2022-09-01"
     maxlatitude: 55.588 
     minlatitude: 40.459
     maxlongitude: 87.012
     minlongitude: 46.055
-    minmagnitude: 2.5
+    minmagnitude: 0
 
 target:
     mag_max_target_th: 5
