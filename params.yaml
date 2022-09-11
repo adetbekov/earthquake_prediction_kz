@@ -1,13 +1,27 @@
+seed: 42
+
 collect_data:
-    endtime: "2022-09-01"
+    endtime: "2022-06-01"
     maxlatitude: 55.588 
     minlatitude: 40.459
     maxlongitude: 87.012
     minlongitude: 46.055
+    minmagnitude: 2.5
 
 target:
     mag_max_target_th: 5
 
 preprocess:
-    na_strategies: ["zero", "min", "mean"]
+    na_strategies: ["zero"]
     roll_years_agg: [3, 10, 25, 50, 80, 100]
+
+train_test_split:
+    test_size: 0.2
+    dropzero_train: false
+    dropzero_test: false
+    
+random_forest:
+    params:
+        n_estimators: 500
+        max_depth: 10
+    

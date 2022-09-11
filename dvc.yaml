@@ -20,5 +20,37 @@ stages:
                 - data/geocoded_areas.csv
             outs:
 #                 - artifacts/preprocess/enrich_administrative_areas_${item}.csv
-                - artifacts/preprocess/metadata_${item}.json
-                - artifacts/preprocess/data_${item}.csv
+                - artifacts/${item}/metadata.json
+                - artifacts/${item}/data.csv
+    train_test_split:
+        foreach: ${preprocess.na_strategies}
+        do:
+            cmd: python src/train_test_split.py ${item}
+            params:
+                - train_test_split
+                - seed
+            deps:
+                - src/train_test_split.py
+                - artifacts/${item}/data.csv
+            outs:
+                - artifacts/${item}/train.csv
+                - artifacts/${item}/test.csv
+                
+    model@random_forest:
+        foreach: ${preprocess.na_strategies}
+        do:
+            cmd: python src/model_random_forest.py ${item}
+            params:
+                - random_forest
+                - seed
+            deps:
+                - src/model_random_forest.py
+                - src/evaluation.py
+                - artifacts/${item}/train.csv
+                - artifacts/${item}/test.csv
+            outs:
+                - artifacts/${item}/clf_rf.pkl
+                - artifacts/${item}/rf_features.pkl
+            metrics:
+                - artifacts/${item}/rf_metrics.json:
+                    cache: false

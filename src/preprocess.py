@@ -151,7 +151,7 @@ def collect(path, na_strategy, mag_max_target_th, roll_years_agg):
     
     ## Drop leaks
     drop_leaks = [
-        f"{feature}_{agg}" for agg in agg_funcs for feature in ["mag", "depth"] if feature != "mag" and agg != "max"
+        f"{feature}_{agg}" for agg in agg_funcs for feature in ["mag", "depth"] if (f"{feature}_{agg}" != "mag_max")
     ]
     train_cj = train_cj.drop(drop_leaks, axis=1)
     metadata.update({
@@ -178,7 +178,7 @@ if __name__ == "__main__":
         roll_years_agg = params["preprocess"]["roll_years_agg"]
     )
     
-    data.to_csv(f"artifacts/preprocess/data_{na_strategy}.csv", sep=";", index=False)
-    with open(f"artifacts/preprocess/metadata_{na_strategy}.json", 'w', encoding='utf-8') as f:
+    data.to_csv(f"artifacts/{na_strategy}/data.csv", sep=";", index=False)
+    with open(f"artifacts/{na_strategy}/metadata.json", 'w', encoding='utf-8') as f:
         json.dump(metadata, f, ensure_ascii=False, indent=4, cls=NpEncoder)
         

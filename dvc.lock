@@ -4,39 +4,38 @@ stages:
     cmd: python src/collect_data.py
     deps:
     - path: src/collect_data.py
-      md5: 9d2a62553b1243284cc2c597daae9832
-      size: 1009
+      md5: 629f714d2909cdc874f5f8c923fda1b5
+      size: 1065
     params:
       params.yaml:
         collect_data:
-          endtime: '2022-09-01'
+          endtime: '2022-06-01'
           maxlatitude: 55.588
           minlatitude: 40.459
           maxlongitude: 87.012
           minlongitude: 46.055
+          minmagnitude: 2.5
     outs:
     - path: data/data.json
-      md5: cc91705781ba4fdfd977a4b1c27a2b5a
-      size: 3957486
+      md5: 69bf3147b15011cc3dc05fc062dd481d
+      size: 3667841
   preprocess@zero:
     cmd: python src/preprocess.py zero
     deps:
     - path: data/data.json
-      md5: cc91705781ba4fdfd977a4b1c27a2b5a
-      size: 3957486
+      md5: 69bf3147b15011cc3dc05fc062dd481d
+      size: 3667841
     - path: data/geocoded_areas.csv
       md5: d3f1fce283b88b6438b50f3dec561a9e
       size: 14726
     - path: src/preprocess.py
-      md5: 74d577e7eab8696eacb4e6a1e363a743
-      size: 6750
+      md5: cf0d370caea2fdf810dd9cc7862d91f9
+      size: 6728
     params:
       params.yaml:
         preprocess:
           na_strategies:
           - zero
-          - min
-          - mean
           roll_years_agg:
           - 3
           - 10
@@ -47,24 +46,24 @@ stages:
         target:
           mag_max_target_th: 5
     outs:
-    - path: artifacts/preprocess/data_zero.csv
-      md5: c8472f3e6d15c231d7ecba58f2e2e2d5
-      size: 1663989
-    - path: artifacts/preprocess/metadata_zero.json
-      md5: a5d125f8167bec91b08acf20fad687ed
-      size: 1458
+    - path: artifacts/zero/data.csv
+      md5: b87f983a5bdc988d2b90b767da72d3e7
+      size: 1621163
+    - path: artifacts/zero/metadata.json
+      md5: 6210fde1a7cdfe2b9030802c0395fe7a
+      size: 1460
   preprocess@min:
     cmd: python src/preprocess.py min
     deps:
     - path: data/data.json
-      md5: cc91705781ba4fdfd977a4b1c27a2b5a
+      md5: 933ff289897b0cd6ea27a67c96b8582a
       size: 3957486
     - path: data/geocoded_areas.csv
       md5: d3f1fce283b88b6438b50f3dec561a9e
       size: 14726
     - path: src/preprocess.py
-      md5: 74d577e7eab8696eacb4e6a1e363a743
-      size: 6750
+      md5: 6ba899205918764f76928b8166a32cd9
+      size: 6728
     params:
       params.yaml:
         preprocess:
@@ -82,24 +81,24 @@ stages:
         target:
           mag_max_target_th: 5
     outs:
-    - path: artifacts/preprocess/data_min.csv
+    - path: artifacts/min/data.csv
       md5: f81292d4c707097901437ebca60f2d8f
       size: 1662427
-    - path: artifacts/preprocess/metadata_min.json
-      md5: a5d125f8167bec91b08acf20fad687ed
+    - path: artifacts/min/metadata.json
+      md5: 9e7cf0c5f2d4f4834f058176991a9a03
       size: 1458
   preprocess@mean:
     cmd: python src/preprocess.py mean
     deps:
     - path: data/data.json
-      md5: cc91705781ba4fdfd977a4b1c27a2b5a
+      md5: 933ff289897b0cd6ea27a67c96b8582a
       size: 3957486
     - path: data/geocoded_areas.csv
       md5: d3f1fce283b88b6438b50f3dec561a9e
       size: 14726
     - path: src/preprocess.py
-      md5: 74d577e7eab8696eacb4e6a1e363a743
-      size: 6750
+      md5: 6ba899205918764f76928b8166a32cd9
+      size: 6728
     params:
       params.yaml:
         preprocess:
@@ -117,9 +116,204 @@ stages:
         target:
           mag_max_target_th: 5
     outs:
-    - path: artifacts/preprocess/data_mean.csv
+    - path: artifacts/mean/data.csv
       md5: 7393b49d019e455a53557a4360afcce7
       size: 3641022
-    - path: artifacts/preprocess/metadata_mean.json
-      md5: f410d7db09e9d0fd17b7105ff75a5c93
+    - path: artifacts/mean/metadata.json
+      md5: b06ee7f3581a923dff342863e5401ae6
       size: 1459
+  train_test_split@zero:
+    cmd: python src/train_test_split.py zero
+    deps:
+    - path: artifacts/zero/data.csv
+      md5: b87f983a5bdc988d2b90b767da72d3e7
+      size: 1621163
+    - path: src/train_test_split.py
+      md5: 5c53e8954fb2d69654a69d297f2c0a9b
+      size: 1532
+    params:
+      params.yaml:
+        seed: 42
+        train_test_split:
+          test_size: 0.2
+          dropzero_train: false
+          dropzero_test: false
+    outs:
+    - path: artifacts/zero/test.csv
+      md5: 3d6cd5fca874f51208031847fbcbe260
+      size: 395350
+    - path: artifacts/zero/train.csv
+      md5: b8a5d8f0c2ef5486f91c6d783f83ae3b
+      size: 1562700
+  train_test_split@min:
+    cmd: python src/train_test_split.py min
+    deps:
+    - path: artifacts/min/data.csv
+      md5: f81292d4c707097901437ebca60f2d8f
+      size: 1662427
+    - path: src/train_test_split.py
+      md5: 5c53e8954fb2d69654a69d297f2c0a9b
+      size: 1532
+    params:
+      params.yaml:
+        seed: 42
+        train_test_split:
+          test_size: 0.2
+          dropzero_train: true
+          dropzero_test: true
+    outs:
+    - path: artifacts/min/test.csv
+      md5: a9c5b45fc93136b983e145728c2f9470
+      size: 183393
+    - path: artifacts/min/train.csv
+      md5: 7fae78382a6287648b7d36074fbfac88
+      size: 714826
+  train_test_split@mean:
+    cmd: python src/train_test_split.py mean
+    deps:
+    - path: artifacts/mean/data.csv
+      md5: 7393b49d019e455a53557a4360afcce7
+      size: 3641022
+    - path: src/train_test_split.py
+      md5: 5c53e8954fb2d69654a69d297f2c0a9b
+      size: 1532
+    params:
+      params.yaml:
+        seed: 42
+        train_test_split:
+          test_size: 0.2
+          dropzero_train: true
+          dropzero_test: true
+    outs:
+    - path: artifacts/mean/test.csv
+      md5: 36ab18a994629356d231a06e6f1da157
+      size: 802268
+    - path: artifacts/mean/train.csv
+      md5: 35793523b4ff415b020453ddd8b1ecf0
+      size: 3184404
+  model@random_forest@mean:
+    cmd: python src/model_random_forest.py mean
+    deps:
+    - path: artifacts/mean/test.csv
+      md5: 36ab18a994629356d231a06e6f1da157
+      size: 802268
+    - path: artifacts/mean/train.csv
+      md5: 35793523b4ff415b020453ddd8b1ecf0
+      size: 3184404
+    - path: src/evaluation.py
+      md5: 4a7934d3317e43d6e42d0768195b4707
+      size: 2493
+    - path: src/model_random_forest.py
+      md5: f9a4c084b1248798fa96bc4a9fe989e1
+      size: 1930
+    params:
+      params.yaml:
+        random_forest:
+          params:
+            n_estimators: 500
+            max_depth: 10
+        seed: 42
+    outs:
+    - path: artifacts/mean/clf_rf.pkl
+      md5: 9880497aaa2b0f0da97df44a1151186d
+      size: 3371337
+    - path: artifacts/mean/rf_features.pkl
+      md5: 29e1abc4fcdcfb321fd116f8ad4896bc
+      size: 7482
+    - path: artifacts/mean/rf_mean_test_plots/distribution.png
+      md5: 590e887aa349871801ce65c677d9600b
+      size: 38144
+    - path: artifacts/mean/rf_mean_test_plots/roc_auc.png
+      md5: d27b7b6052e34f9765cce649e6b8911c
+      size: 102543
+    - path: artifacts/mean/rf_mean_train_plots/distribution.png
+      md5: e67062fec245ba157856e42c8948c293
+      size: 40397
+    - path: artifacts/mean/rf_mean_train_plots/roc_auc.png
+      md5: 4aace5c564f167db32d826886eea0c9f
+      size: 100273
+    - path: artifacts/mean/test_metrics.json
+      md5: d300593e25d838ecf090fcc00fe21187
+      size: 232
+    - path: artifacts/mean/train_metrics.json
+      md5: bf130a2e30a693f7a1e312c8da326329
+      size: 160
+  model@random_forest@zero:
+    cmd: python src/model_random_forest.py zero
+    deps:
+    - path: artifacts/zero/test.csv
+      md5: 3d6cd5fca874f51208031847fbcbe260
+      size: 395350
+    - path: artifacts/zero/train.csv
+      md5: b8a5d8f0c2ef5486f91c6d783f83ae3b
+      size: 1562700
+    - path: src/evaluation.py
+      md5: 4a7934d3317e43d6e42d0768195b4707
+      size: 2493
+    - path: src/model_random_forest.py
+      md5: ebbd67662cb2fa2314b55bcce6f66cff
+      size: 3299
+    params:
+      params.yaml:
+        random_forest:
+          params:
+            n_estimators: 500
+            max_depth: 10
+        seed: 42
+    outs:
+    - path: artifacts/zero/clf_rf.pkl
+      md5: 1b48a24ec1408d717432b344a3ccb5d8
+      size: 5158390
+    - path: artifacts/zero/rf_features.pkl
+      md5: 8f413fe53584706eebbb48ef99261c26
+      size: 7414
+    - path: artifacts/zero/rf_metrics.json
+      md5: d3046d0de802ada4df3785381f4e4984
+      size: 235
+  model@random_forest@min:
+    cmd: python src/model_random_forest.py min
+    deps:
+    - path: artifacts/min/test.csv
+      md5: a9c5b45fc93136b983e145728c2f9470
+      size: 183393
+    - path: artifacts/min/train.csv
+      md5: 7fae78382a6287648b7d36074fbfac88
+      size: 714826
+    - path: src/evaluation.py
+      md5: 4a7934d3317e43d6e42d0768195b4707
+      size: 2493
+    - path: src/model_random_forest.py
+      md5: f9a4c084b1248798fa96bc4a9fe989e1
+      size: 1930
+    params:
+      params.yaml:
+        random_forest:
+          params:
+            n_estimators: 500
+            max_depth: 10
+        seed: 42
+    outs:
+    - path: artifacts/min/clf_rf.pkl
+      md5: 186352f02b7c545a75c41dcc6c05ef17
+      size: 2486340
+    - path: artifacts/min/rf_features.pkl
+      md5: 29e1abc4fcdcfb321fd116f8ad4896bc
+      size: 7482
+    - path: artifacts/min/rf_min_test_plots/distribution.png
+      md5: c0b13a077332939715e1437cbd07c7d2
+      size: 37096
+    - path: artifacts/min/rf_min_test_plots/roc_auc.png
+      md5: cdbf5e89246636fb7313b6fc7123c490
+      size: 101296
+    - path: artifacts/min/rf_min_train_plots/distribution.png
+      md5: 10b49eb0e4b1922b1cd8e493a7eb8773
+      size: 34904
+    - path: artifacts/min/rf_min_train_plots/roc_auc.png
+      md5: 4aace5c564f167db32d826886eea0c9f
+      size: 100273
+    - path: artifacts/min/test_metrics.json
+      md5: a9838e2b705da8fc1d97121623a227b8
+      size: 232
+    - path: artifacts/min/train_metrics.json
+      md5: 990438dd040ee494f1f9e8afd130a64d
+      size: 158

@@ -5,7 +5,7 @@ import requests
 from datetime import datetime
 
 
-def collect(endtime, maxlatitude, minlatitude, maxlongitude,  minlongitude):
+def collect(endtime, maxlatitude, minlatitude, maxlongitude, minlongitude, minmagnitude):
     url = "https://earthquake.usgs.gov/fdsnws/event/1/query.geojson"
     params = {
         "starttime": datetime(1800, 1, 1),
@@ -14,7 +14,7 @@ def collect(endtime, maxlatitude, minlatitude, maxlongitude,  minlongitude):
         "minlatitude": minlatitude,
         "maxlongitude": maxlongitude,
         "minlongitude": minlongitude,
-        "minmagnitude": 0,
+        "minmagnitude": minmagnitude,
         "orderby": "time"
     }
     response = requests.get(url, params)
@@ -30,7 +30,8 @@ if __name__ == "__main__":
         params["maxlatitude"],
         params["minlatitude"],
         params["maxlongitude"],
-        params["minlongitude"]
+        params["minlongitude"],
+        params["minmagnitude"]
     )
     
     with open('data/data.json', 'w', encoding='utf-8') as f:
