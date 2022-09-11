@@ -7,13 +7,17 @@ import argparse
 import pandas as pd
 from evaluation import evaluate
 import matplotlib.pyplot as plt
+
 from sklearn.ensemble import RandomForestClassifier
 
 class Dataset:
-    def __init__(self, path):
+    def __init__(self, path, train=True):
         self.df = pd.read_csv(path, sep=";")
+        self.drop_cols = ["mag_max", "TARGET"]
+        if train:
+            self.drop_cols += ["year_", "REGION_"]
         self.X = self.df.drop(
-            ["mag_max", "TARGET", "year_", "REGION_"], 
+            self.drop_cols, 
             axis = 1
         )
         self.y = self.df["TARGET"]
@@ -23,13 +27,13 @@ def feature_importance(model, dataset):
     explainer = shap.TreeExplainer(model)
     shap_values = explainer.shap_values(dataset.X)
     
-    return shap.summary_plot(shap_values[0], dataset.X, plot_type="violin")
+    return shap.summary_plot(shap_values[1], dataset.X, plot_type="dot")
 
-# def dependence_plot(model, dataset):
-#     explainer = shap.TreeExplainer(model)
-#     shap_values = explainer.shap_values(dataset.X)
-    
-#     return shap.dependence_plot("rollmax_10y_mag_max", shap_values[1], dataset.X)
+def save_plot(path, func, **kwargs):
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    plot = func(**kwargs)
+    plt.savefig(path, format="png", dpi=220)
+    plt.clf()
 
 def train(hyperparams, dataset, seed):
     X_train, y_train = dataset.X, dataset.y
@@ -41,16 +45,13 @@ def train(hyperparams, dataset, seed):
     
 
 if __name__ == "__main__":
-    model_type = 'rf'
-    parser = argparse.ArgumentParser(description='model')
-    parser.add_argument('na_strategy', type=str, help='With what to fill na values [mean, min, zero]')
-    args = parser.parse_args()
-    na_strategy = args.na_strategy
+    model_type = 'random_forest'
     
     params = dvc.api.params_show()
-    model_params = params["random_forest"]
+    model_params = params[f"{model_type}"]
     
-    train_dataset = Dataset(f"artifacts/{na_strategy}/train.csv")
+    train_dataset = Dataset("artifacts/train.csv")
+    test_dataset = Dataset("artifacts/test.csv", train=False)
     
     model, features = train(
         hyperparams = model_params["params"],
@@ -59,39 +60,26 @@ if __name__ == "__main__":
     )
     
     # Imp
-    imp_filename = f"artifacts/{na_strategy}/plots/{model_type}_imp.png"
-    os.makedirs(os.path.dirname(imp_filename), exist_ok=True)
-    imp = feature_importance(model, train_dataset)
-    plt.savefig(imp_filename, format="png", dpi=300)
-    plt.clf()
-    
-#     # Explain first
-#     first_dep_filename = f"artifacts/{na_strategy}/plots/{model_type}_first_dep.png"
-#     os.makedirs(os.path.dirname(imp_filename), exist_ok=True)
-#     first_dep = dependence_plot(model, train_dataset)
-#     plt.savefig(first_dep_filename, format="png", dpi=300)
-#     plt.clf()
-    
-#     metrics_train = evaluate(
-#         name = f"{model_type}_{na_strategy}_train",
-#         na_strategy = na_strategy,
-#         model = model,
-#         features = features,
-#         df_path = f"artifacts/{na_strategy}/train.csv"
-#     )
-    metrics_test = evaluate(
-        name = f"{model_type}_{na_strategy}_test",
-        na_strategy = na_strategy,
-        model = model, 
-        features = features,
-        df_path = f"artifacts/{na_strategy}/test.csv"
+    save_plot(
+        f"models/fi_{model_type}.png",
+        feature_importance,
+        model = model,
+        dataset = train_dataset
     )
     
-    pickle.dump(features, open(f"artifacts/{na_strategy}/{model_type}_features.pkl", 'wb'))
-    pickle.dump(model, open(f"artifacts/{na_strategy}/clf_{model_type}.pkl", 'wb'))
+    # Metircs
+    metrics_test = evaluate(
+        name = model_type,
+        model = model, 
+        features = features,
+        dataset = test_dataset
+    )
     
-#     with open(f"artifacts/{na_strategy}/{model_type}_train_metrics.json", "w", encoding="utf-8") as f:
-#         json.dump(metrics_train, f, ensure_ascii=False, indent=4)
-    with open(f"artifacts/{na_strategy}/{model_type}_metrics.json", "w", encoding="utf-8") as f:
+    os.makedirs("models/", exist_ok=True)
+    
+    pickle.dump(features, open(f"models/features_{model_type}.pkl", 'wb'))
+    pickle.dump(model, open(f"models/model_{model_type}.pkl", 'wb'))
+    
+    with open(f"models/metrics_{model_type}.json", "w", encoding="utf-8") as f:
         json.dump(metrics_test, f, ensure_ascii=False, indent=4)
         

@@ -317,3 +317,99 @@ stages:
     - path: artifacts/min/train_metrics.json
       md5: 990438dd040ee494f1f9e8afd130a64d
       size: 158
+  preprocess:
+    cmd: python src/preprocess.py
+    deps:
+    - path: data/data.json
+      md5: 69bf3147b15011cc3dc05fc062dd481d
+      size: 3667841
+    - path: data/geocoded_areas.csv
+      md5: d3f1fce283b88b6438b50f3dec561a9e
+      size: 14726
+    - path: src/preprocess.py
+      md5: 12a5fada8f481a4ca1dd71e8bb3fe738
+      size: 6620
+    params:
+      params.yaml:
+        preprocess:
+          na_strategy: zero
+          roll_years_agg:
+          - 3
+          - 10
+          - 25
+          - 50
+          - 80
+          - 100
+        target:
+          mag_max_target_th: 5
+    outs:
+    - path: artifacts/data.csv
+      md5: b87f983a5bdc988d2b90b767da72d3e7
+      size: 1621163
+    - path: artifacts/metadata.json
+      md5: 6210fde1a7cdfe2b9030802c0395fe7a
+      size: 1460
+  train_test_split:
+    cmd: python src/train_test_split.py
+    deps:
+    - path: artifacts/data.csv
+      md5: b87f983a5bdc988d2b90b767da72d3e7
+      size: 1621163
+    - path: src/train_test_split.py
+      md5: a86ad1a36aac648d6efd6dd0580a6a80
+      size: 1247
+    params:
+      params.yaml:
+        seed: 42
+        train_test_split:
+          test_size: 0.2
+          dropzero_train: true
+          dropzero_test: false
+    outs:
+    - path: artifacts/test.csv
+      md5: 3d6cd5fca874f51208031847fbcbe260
+      size: 395350
+    - path: artifacts/train.csv
+      md5: 6da39861e75fe439ce14e1c3c9df8d0d
+      size: 700804
+  model@random_forest:
+    cmd: python src/model_random_forest.py
+    deps:
+    - path: artifacts/test.csv
+      md5: 3d6cd5fca874f51208031847fbcbe260
+      size: 395350
+    - path: artifacts/train.csv
+      md5: 6da39861e75fe439ce14e1c3c9df8d0d
+      size: 700804
+    - path: src/evaluation.py
+      md5: 1ae1eac3eb5d7516b23efcd99cee62d4
+      size: 1754
+    - path: src/model_random_forest.py
+      md5: bcebd83cc2bedafb65a98cfdfb167caa
+      size: 2272
+    params:
+      params.yaml:
+        random_forest:
+          params:
+            n_estimators: 500
+            max_depth: 10
+        seed: 42
+    outs:
+    - path: eval_plots/plots/roc.json
+      md5: 005288bc8eb3da7ac2007cc1d288d2e3
+      size: 8481
+    - path: models/features_random_forest.pkl
+      md5: 8f413fe53584706eebbb48ef99261c26
+      size: 7414
+    - path: models/fi_random_forest.png
+      md5: 7dea2639a452b5380416644d9be37ea1
+      size: 432030
+    - path: models/metrics_random_forest.json
+      md5: c8027c7c1fdfdb904d93b59dc0878ae0
+      size: 215
+    - path: models/model_random_forest.pkl
+      md5: af3ea73cf2056cd4deef3ac37d50a52b
+      size: 2980120
+    - path: models/scordistr_random_forest.png
+      md5: 4288e6efe455fd1139cae1b3345830ba
+      size: 30965

@@ -28,21 +28,16 @@ def process(path, test_size=0.2, dropzero_train=False, dropzero_test=False, seed
     
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='train_test_split')
-    parser.add_argument('na_strategy', type=str, help='With what to fill na values [mean, min, zero]')
-    args = parser.parse_args()
-    na_strategy = args.na_strategy
-    
     params = dvc.api.params_show()
     
     TRAIN_CLEAN, TEST_CLEAN = process(
-        f"artifacts/{na_strategy}/data.csv", 
+        f"artifacts/data.csv", 
         params["train_test_split"]["test_size"], 
         params["train_test_split"]["dropzero_train"],
         params["train_test_split"]["dropzero_test"],
         params["seed"]
     )
     
-    TRAIN_CLEAN.to_csv(f"artifacts/{na_strategy}/train.csv", sep=";", index=False)
-    TEST_CLEAN.to_csv(f"artifacts/{na_strategy}/test.csv", sep=";", index=False)
+    TRAIN_CLEAN.to_csv(f"artifacts/train.csv", sep=";", index=False)
+    TEST_CLEAN.to_csv(f"artifacts/test.csv", sep=";", index=False)
     

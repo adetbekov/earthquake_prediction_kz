@@ -1,3 +1,4 @@
+import os
 import json
 import dvc.api
 import argparse
@@ -144,10 +145,16 @@ def collect(path, na_strategy, mag_max_target_th, roll_years_agg):
                 train_cj['rollmean_{}y_{}_{}'.format(LAG, n, m)] = train_cj.groupby(["REGION_"])[n+"_"+m].apply(lambda v: v.shift(1).rolling(LAG).mean())
                 
     target_size_counts = train_cj["TARGET"].value_counts(1)
-    metadata.update({"target_size": target_size_counts.to_dict()[True]})
+    try:
+        metadata.update({"target_size": target_size_counts.to_dict()[True]})
+    except:
+        pass
     
     zero_mag_counts = (train_cj["mag_max"] == 0).value_counts(1)
-    metadata.update({"zero_mag": zero_mag_counts.to_dict()[True]})
+    try:
+        metadata.update({"zero_mag": zero_mag_counts.to_dict()[True]})
+    except:
+        pass
     
     ## Drop leaks
     drop_leaks = [
@@ -164,21 +171,18 @@ def collect(path, na_strategy, mag_max_target_th, roll_years_agg):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='preprocessing')
-    parser.add_argument('na_strategy', type=str, help='With what to fill na values [mean, min, zero]')
-    args = parser.parse_args()
-    na_strategy = args.na_strategy
-    
     params = dvc.api.params_show()
 
     data, metadata = collect(
         path = "data/data.json",
-        na_strategy = na_strategy,
         mag_max_target_th = params["target"]["mag_max_target_th"],
-        roll_years_agg = params["preprocess"]["roll_years_agg"]
+        roll_years_agg = params["preprocess"]["roll_years_agg"],
+        na_strategy = params["preprocess"]["na_strategy"]
     )
     
-    data.to_csv(f"artifacts/{na_strategy}/data.csv", sep=";", index=False)
-    with open(f"artifacts/{na_strategy}/metadata.json", 'w', encoding='utf-8') as f:
+    os.makedirs("artifacts/", exist_ok=True)
+    
+    data.to_csv(f"artifacts/data.csv", sep=";", index=False)
+    with open(f"artifacts/metadata.json", 'w', encoding='utf-8') as f:
         json.dump(metadata, f, ensure_ascii=False, indent=4, cls=NpEncoder)
         

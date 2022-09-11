@@ -8,49 +8,52 @@ stages:
         outs:
             - data/data.json
     preprocess:
-        foreach: ${preprocess.na_strategies}
-        do:
-            cmd: python src/preprocess.py ${item}
-            params:
-                - preprocess
-                - target
-            deps:
-                - src/preprocess.py
-                - data/data.json
-                - data/geocoded_areas.csv
-            outs:
-#                 - artifacts/preprocess/enrich_administrative_areas_${item}.csv
-                - artifacts/${item}/metadata.json
-                - artifacts/${item}/data.csv
+        cmd: python src/preprocess.py
+        params:
+            - preprocess
+            - target
+        deps:
+            - src/preprocess.py
+            - data/data.json
+            - data/geocoded_areas.csv
+        outs:
+#                 - artifacts/preprocess/enrich_administrative_areas.csv
+            - artifacts/metadata.json
+            - artifacts/data.csv
     train_test_split:
-        foreach: ${preprocess.na_strategies}
+        cmd: python src/train_test_split.py
+        params:
+            - train_test_split
+            - seed
+        deps:
+            - src/train_test_split.py
+            - artifacts/data.csv
+        outs:
+            - artifacts/train.csv
+            - artifacts/test.csv           
+    model:
+        foreach:
+            - random_forest
         do:
-            cmd: python src/train_test_split.py ${item}
+            cmd: python src/model_${item}.py
             params:
-                - train_test_split
+                - ${item}
                 - seed
             deps:
-                - src/train_test_split.py
-                - artifacts/${item}/data.csv
-            outs:
-                - artifacts/${item}/train.csv
-                - artifacts/${item}/test.csv
-                
-    model@random_forest:
-        foreach: ${preprocess.na_strategies}
-        do:
-            cmd: python src/model_random_forest.py ${item}
-            params:
-                - random_forest
-                - seed
-            deps:
-                - src/model_random_forest.py
+                - src/model_${item}.py
                 - src/evaluation.py
-                - artifacts/${item}/train.csv
-                - artifacts/${item}/test.csv
+                - artifacts/train.csv
+                - artifacts/test.csv
             outs:
-                - artifacts/${item}/clf_rf.pkl
-                - artifacts/${item}/rf_features.pkl
+                - models/model_${item}.pkl
+                - models/features_${item}.pkl
             metrics:
-                - artifacts/${item}/rf_metrics.json:
+                - models/metrics_${item}.json:
                     cache: false
+            plots:
+                - models/fi_${item}.png
+                - models/scordistr_${item}.png
+                - eval_plots/plots/roc.json:
+                    cache: false
+                    x: fpr
+                    y: tpr
