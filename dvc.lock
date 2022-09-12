@@ -434,6 +434,7 @@ stages:
           params:
             n_estimators: 500
             max_depth: 10
+        model_type: lightgbm
         random_forest:
           params:
             n_estimators: 500
@@ -441,20 +442,20 @@ stages:
         seed: 42
     outs:
     - path: eval_plots/plots/roc.json
-      md5: 06b2f88815f1818e8ab5b1b20c1b8df2
-      size: 7584
+      md5: fb47a69ff6aad2cc3ea7dd06b5aa7a60
+      size: 9304
     - path: models/feature_importance.png
-      md5: 2d210bcdc3c72ff83faea0a12ff59d55
-      size: 453861
+      md5: 4ae5e3c6cdfd8923b6fad5205e79da81
+      size: 428134
     - path: models/features.pkl
       md5: 5d8e76df9aa647f8160c3d17fdfc38ed
       size: 8290
     - path: models/metrics.json
-      md5: 3adbec1108b0424df5a253949162ebc8
-      size: 230
+      md5: a63b3ab5ff5cd2f59de54c13318ea659
+      size: 225
     - path: models/model.pkl
-      md5: a149567b509eaaf6d9842d52815a98d5
-      size: 2878450
+      md5: 357908dea40efa8161e16b1ccdde9a75
+      size: 438595
     - path: models/score_distribution.png
-      md5: c695a7e20cd4c0ea93bce0897e577a60
-      size: 30957
+      md5: f679b6ffecca66b4f1c5e927aea5a587
+      size: 30916
