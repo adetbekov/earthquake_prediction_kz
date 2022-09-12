@@ -363,15 +363,15 @@ stages:
         seed: 42
         train_test_split:
           test_size: 0.2
-          dropzero_train: true
-          dropzero_test: false
+          dropzero_train: false
+          dropzero_test: true
     outs:
     - path: artifacts/test.csv
-      md5: 3900ed349cb3c2d7f2a90055de358496
-      size: 454339
+      md5: d76d7f00ffc6e36fcdbf369f71195fac
+      size: 205024
     - path: artifacts/train.csv
-      md5: 624ceb27fb28e76b45c6c52c7fe993c1
-      size: 798991
+      md5: 717044ff86abb3b4e0e0ef06440aebc5
+      size: 1788837
   model@random_forest:
     cmd: python src/model_random_forest.py
     deps:
@@ -417,11 +417,11 @@ stages:
     cmd: python src/model.py
     deps:
     - path: artifacts/test.csv
-      md5: 3900ed349cb3c2d7f2a90055de358496
-      size: 454339
+      md5: d76d7f00ffc6e36fcdbf369f71195fac
+      size: 205024
     - path: artifacts/train.csv
-      md5: 624ceb27fb28e76b45c6c52c7fe993c1
-      size: 798991
+      md5: 717044ff86abb3b4e0e0ef06440aebc5
+      size: 1788837
     - path: src/evaluation.py
       md5: c08bcc9dddbc59043deb379838f0b6bc
       size: 1757
@@ -433,7 +433,8 @@ stages:
         lightgbm:
           params:
             n_estimators: 500
-            max_depth: 10
+            max_depth: -1
+        model_type: random_forest
         random_forest:
           params:
             n_estimators: 500
@@ -441,20 +442,20 @@ stages:
         seed: 42
     outs:
     - path: eval_plots/plots/roc.json
-      md5: 06b2f88815f1818e8ab5b1b20c1b8df2
-      size: 7584
+      md5: 5f2fcc0ff203be659c91bf4962047350
+      size: 5661
     - path: models/feature_importance.png
-      md5: 2d210bcdc3c72ff83faea0a12ff59d55
-      size: 453861
+      md5: 7364b2f302c452d8bfecb3c0df1f47e6
+      size: 393880
     - path: models/features.pkl
       md5: 5d8e76df9aa647f8160c3d17fdfc38ed
       size: 8290
     - path: models/metrics.json
-      md5: 3adbec1108b0424df5a253949162ebc8
+      md5: 001c49783170dd02841798bc4aae1bc3
       size: 230
     - path: models/model.pkl
-      md5: a149567b509eaaf6d9842d52815a98d5
-      size: 2878450
+      md5: 37c5db8a4b7a5d81ebd401c6946335c3
+      size: 4940071
     - path: models/score_distribution.png
-      md5: c695a7e20cd4c0ea93bce0897e577a60
-      size: 30957
+      md5: eba7718889d43f51ccaf8b3bdf9857f3
+      size: 27917
