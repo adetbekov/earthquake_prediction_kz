@@ -423,18 +423,18 @@ stages:
       md5: 5ad43ba8bac391f0ea3788a6cca5f2b9
       size: 702809
     - path: src/evaluation.py
-      md5: c08bcc9dddbc59043deb379838f0b6bc
-      size: 1757
+      md5: d891fe2b79f485cf3463768e728feaa8
+      size: 1799
     - path: src/model.py
-      md5: 84725de7b771321288a1211564584df5
-      size: 2660
+      md5: 697a93cbf58edc00efe653542d85fab1
+      size: 4519
     params:
       params.yaml:
         lightgbm:
           params:
             n_estimators: 500
             max_depth: -1
-        model_type: random_forest
+        model_type: nn_fc
         random_forest:
           params:
             n_estimators: 800
@@ -442,20 +442,20 @@ stages:
         seed: 42
     outs:
     - path: eval_plots/plots/roc.json
-      md5: 09e4d24a6a5cb91114322d806415cd06
-      size: 12086
+      md5: 7952595a6af7af47d022d85a9d45667e
+      size: 9706
     - path: models/feature_importance.png
-      md5: c8a69d4092759745412bd1c13d01e0f5
-      size: 465064
+      md5: 14bde6d72cd34fd1faa965b637661e8a
+      size: 375039
     - path: models/features.pkl
       md5: 5d8e76df9aa647f8160c3d17fdfc38ed
       size: 8290
     - path: models/metrics.json
-      md5: c78bb7ff37560bdad80a937c208b5870
-      size: 231
+      md5: 0255b9312947ae9a6a052a9d872d3531
+      size: 223
     - path: models/model.pkl
-      md5: ed439dc795c2d4ec330d352be69dc76f
-      size: 4364785
+      md5: 86427aeac9fa032b7a72c7c1e8396b9c
+      size: 4738872
     - path: models/score_distribution.png
-      md5: ad15fe3918209bcbefdcf51405472bdb
-      size: 35805
+      md5: 649ceebdaff179509eaa6db6aa0bed8a
+      size: 34312

@@ -33,7 +33,9 @@ def evaluate(name, model, features, dataset):
     
     pred = model.predict_proba(X[features])[:,1]
     
-    live.log_plot("roc", y, pred)
+    print(y, pred)
+    
+    live.log_plot("roc", y, list(map(float, pred)))
     
     roc_auc = metrics.roc_auc_score(y, pred)
     live.log("auc", roc_auc)

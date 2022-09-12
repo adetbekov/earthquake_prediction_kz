@@ -1,5 +1,5 @@
 seed: 42
-model_type: "random_forest"
+model_type: "nn_fc"
 
 collect_data:
     endtime: "2022-09-01"
@@ -29,3 +29,13 @@ lightgbm:
     params:
         n_estimators: 500
         max_depth: -1
+svc:
+    params:
+        C: 1.0
+        kernel: 'rbf'
+        degree: 3
+        gamma: 'scale'
+        probability: true
+nn_fc:
+    params:
+        epochs: 100 

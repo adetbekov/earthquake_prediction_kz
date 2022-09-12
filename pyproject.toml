@@ -7,7 +7,7 @@ readme = "README.md"
 packages = [{include = "earthquake_prediction_kz"}]
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = ">=3.8,<3.10"
 pandas = "^1.4.4"
 numpy = "^1.23.2"
 geopandas = "^0.11.1"
@@ -17,6 +17,9 @@ matplotlib = "^3.5.3"
 shap = "^0.41.0"
 dvclive = "^0.10.0"
 lightgbm = "^3.3.2"
+keras = "^2.10.0"
+scikeras = "^0.9.0"
+tensorflow = "^2.10.0"
 
 
 [tool.poetry.group.dev.dependencies]
