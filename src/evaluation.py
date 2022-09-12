@@ -28,7 +28,7 @@ def save_plot(path, func, **kwargs):
     plt.clf()
     
 def evaluate(name, model, features, dataset):
-    live = Live("eval_plots")
+    live = Live(f"eval_plots")
     X, y = dataset.X, dataset.y
     
     pred = model.predict_proba(X[features])[:,1]
@@ -44,7 +44,7 @@ def evaluate(name, model, features, dataset):
     accuracy = metrics.accuracy_score(y, 1*(pred >= thresh))
     
     save_plot(
-        f"models/scordistr_{name}.png",
+        f"models/score_distribution.png",
         lambda pred: plt.hist(pred, bins=40),
         pred = pred
     )
