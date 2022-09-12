@@ -16,6 +16,7 @@ sklearn = "^0.0"
 matplotlib = "^3.5.3"
 shap = "^0.41.0"
 dvclive = "^0.10.0"
+lightgbm = "^3.3.2"
 
 
 [tool.poetry.group.dev.dependencies]

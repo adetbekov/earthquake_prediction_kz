@@ -1,4 +1,4 @@
 [core]
-    remote = earthquake_prediction_kz_dvc
-['remote "earthquake_prediction_kz_dvc"']
-    url = /home/YAdetbekov/dvc/earthquake_prediction_kz_dvc
+    autostage = true
+['remote "remote"']
+    url = /home/YAdetbekov/dvc

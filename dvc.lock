@@ -17,8 +17,8 @@ stages:
           minmagnitude: 0
     outs:
     - path: data/data.json
-      md5: 6f821bcb9684c0306cbef576f0c06758
-      size: 3957486
+      md5: 9a0ae139659dacd4311893adadadb189
+      size: 3958869
   preprocess@zero:
     cmd: python src/preprocess.py zero
     deps:
@@ -321,14 +321,14 @@ stages:
     cmd: python src/preprocess.py
     deps:
     - path: data/data.json
-      md5: 6f821bcb9684c0306cbef576f0c06758
-      size: 3957486
+      md5: 9a0ae139659dacd4311893adadadb189
+      size: 3958869
     - path: data/geocoded_areas.csv
       md5: d3f1fce283b88b6438b50f3dec561a9e
       size: 14726
     - path: src/preprocess.py
-      md5: 12a5fada8f481a4ca1dd71e8bb3fe738
-      size: 6620
+      md5: fa515911505355526d92918bda847092
+      size: 6622
     params:
       params.yaml:
         preprocess:
@@ -344,17 +344,17 @@ stages:
           mag_max_target_th: 5
     outs:
     - path: artifacts/data.csv
-      md5: c4ff4c59452b30ce5146f040db7ed4ba
-      size: 1628435
+      md5: 01f45301e33f5d2c0c4b02ff765a3c6b
+      size: 1901923
     - path: artifacts/metadata.json
-      md5: 17eaac5b6c134a39a76a0efa4855e494
+      md5: 912a8922db350e40863cd349d7ce14d9
       size: 1458
   train_test_split:
     cmd: python src/train_test_split.py
     deps:
     - path: artifacts/data.csv
-      md5: c4ff4c59452b30ce5146f040db7ed4ba
-      size: 1628435
+      md5: 01f45301e33f5d2c0c4b02ff765a3c6b
+      size: 1901923
     - path: src/train_test_split.py
       md5: a86ad1a36aac648d6efd6dd0580a6a80
       size: 1247
@@ -367,11 +367,11 @@ stages:
           dropzero_test: false
     outs:
     - path: artifacts/test.csv
-      md5: 41255038262cf22c197aef4763924098
-      size: 398568
+      md5: 3900ed349cb3c2d7f2a90055de358496
+      size: 454339
     - path: artifacts/train.csv
-      md5: df804d3aaf694d2009b21771531de9f0
-      size: 701840
+      md5: 624ceb27fb28e76b45c6c52c7fe993c1
+      size: 798991
   model@random_forest:
     cmd: python src/model_random_forest.py
     deps:
@@ -413,3 +413,48 @@ stages:
     - path: models/scordistr_random_forest.png
       md5: 056d4adc635c4f0fccc4a888d155c13c
       size: 30956
+  model:
+    cmd: python src/model.py
+    deps:
+    - path: artifacts/test.csv
+      md5: 3900ed349cb3c2d7f2a90055de358496
+      size: 454339
+    - path: artifacts/train.csv
+      md5: 624ceb27fb28e76b45c6c52c7fe993c1
+      size: 798991
+    - path: src/evaluation.py
+      md5: c08bcc9dddbc59043deb379838f0b6bc
+      size: 1757
+    - path: src/model.py
+      md5: 84725de7b771321288a1211564584df5
+      size: 2660
+    params:
+      params.yaml:
+        lightgbm:
+          params:
+            n_estimators: 500
+            max_depth: 10
+        random_forest:
+          params:
+            n_estimators: 500
+            max_depth: 10
+        seed: 42
+    outs:
+    - path: eval_plots/plots/roc.json
+      md5: 06b2f88815f1818e8ab5b1b20c1b8df2
+      size: 7584
+    - path: models/feature_importance.png
+      md5: 2d210bcdc3c72ff83faea0a12ff59d55
+      size: 453861
+    - path: models/features.pkl
+      md5: 5d8e76df9aa647f8160c3d17fdfc38ed
+      size: 8290
+    - path: models/metrics.json
+      md5: 3adbec1108b0424df5a253949162ebc8
+      size: 230
+    - path: models/model.pkl
+      md5: a149567b509eaaf6d9842d52815a98d5
+      size: 2878450
+    - path: models/score_distribution.png
+      md5: c695a7e20cd4c0ea93bce0897e577a60
+      size: 30957
