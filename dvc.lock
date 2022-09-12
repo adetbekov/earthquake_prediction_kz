@@ -362,16 +362,16 @@ stages:
       params.yaml:
         seed: 42
         train_test_split:
-          test_size: 0.2
-          dropzero_train: false
-          dropzero_test: true
+          test_size: 0.3
+          dropzero_train: true
+          dropzero_test: false
     outs:
     - path: artifacts/test.csv
-      md5: d76d7f00ffc6e36fcdbf369f71195fac
-      size: 205024
+      md5: 4e98067524427e55e44285e2f6c37bc1
+      size: 677019
     - path: artifacts/train.csv
-      md5: 717044ff86abb3b4e0e0ef06440aebc5
-      size: 1788837
+      md5: 5ad43ba8bac391f0ea3788a6cca5f2b9
+      size: 702809
   model@random_forest:
     cmd: python src/model_random_forest.py
     deps:
@@ -417,11 +417,11 @@ stages:
     cmd: python src/model.py
     deps:
     - path: artifacts/test.csv
-      md5: d76d7f00ffc6e36fcdbf369f71195fac
-      size: 205024
+      md5: 4e98067524427e55e44285e2f6c37bc1
+      size: 677019
     - path: artifacts/train.csv
-      md5: 717044ff86abb3b4e0e0ef06440aebc5
-      size: 1788837
+      md5: 5ad43ba8bac391f0ea3788a6cca5f2b9
+      size: 702809
     - path: src/evaluation.py
       md5: c08bcc9dddbc59043deb379838f0b6bc
       size: 1757
@@ -437,25 +437,25 @@ stages:
         model_type: random_forest
         random_forest:
           params:
-            n_estimators: 500
+            n_estimators: 800
             max_depth: 10
         seed: 42
     outs:
     - path: eval_plots/plots/roc.json
-      md5: 5f2fcc0ff203be659c91bf4962047350
-      size: 5661
+      md5: 09e4d24a6a5cb91114322d806415cd06
+      size: 12086
     - path: models/feature_importance.png
-      md5: 7364b2f302c452d8bfecb3c0df1f47e6
-      size: 393880
+      md5: c8a69d4092759745412bd1c13d01e0f5
+      size: 465064
     - path: models/features.pkl
       md5: 5d8e76df9aa647f8160c3d17fdfc38ed
       size: 8290
     - path: models/metrics.json
-      md5: 001c49783170dd02841798bc4aae1bc3
-      size: 230
+      md5: c78bb7ff37560bdad80a937c208b5870
+      size: 231
     - path: models/model.pkl
-      md5: 37c5db8a4b7a5d81ebd401c6946335c3
-      size: 4940071
+      md5: ed439dc795c2d4ec330d352be69dc76f
+      size: 4364785
     - path: models/score_distribution.png
-      md5: eba7718889d43f51ccaf8b3bdf9857f3
-      size: 27917
+      md5: ad15fe3918209bcbefdcf51405472bdb
+      size: 35805
