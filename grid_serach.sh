@@ -14,7 +14,7 @@ for n_est in "${n_estimators_values[@]}"
                     do
                         for target_th in "${mag_max_target_th[@]}"
                             do
-                            dvc exp run --queue -S random_forest.params.n_estimators=$n_est -S random_forest.params.max_depth=$max_d -S target.mag_max_target_th=$target_th -S preprocess.na_strategy=$na_s
+                            dvc exp run --queue -S random_forest.params.n_estimators=$n_est -S random_forest.params.max_depth=$max_d -S target.mag_max_target_th=$target_th -S preprocess.na_strategy=$na_s --rev lightgbm
                             done
                     done
             done
