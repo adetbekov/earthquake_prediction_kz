@@ -1,5 +1,5 @@
 seed: 42
-model_type: "random_forest"
+model_type: "lightgbm"
 
 collect_data:
     endtime: "2022-09-01"
