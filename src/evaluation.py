@@ -28,7 +28,7 @@ def save_plot(path, func, **kwargs):
     plt.clf()
     
 def evaluate(name, model, features, dataset):
-    live = Live(f"eval_plots")
+    live = Live("eval_plots")
     X, y = dataset.X, dataset.y
     
     pred = model.predict_proba(X[features])[:,1]
@@ -36,7 +36,7 @@ def evaluate(name, model, features, dataset):
     live.log_plot("roc", y, pred)
     
     roc_auc = metrics.roc_auc_score(y, pred)
-    live.log("auc", roc_auc)
+#     live.log("auc", roc_auc)
     thresh, f1 = get_optimal_threshold(model, dataset.df, features, "TARGET")
     
     precision = metrics.precision_score(y, 1*(pred >= thresh))
@@ -48,6 +48,7 @@ def evaluate(name, model, features, dataset):
         lambda pred: plt.hist(pred, bins=40),
         pred = pred
     )
+   
     
     
     return {
@@ -59,4 +60,3 @@ def evaluate(name, model, features, dataset):
         "accuracy": accuracy,
         "thresh": thresh
     }
-    

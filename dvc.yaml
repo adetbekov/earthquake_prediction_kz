@@ -55,3 +55,4 @@ stages:
                 cache: false
                 x: fpr
                 y: tpr
+                title: 'ROC Curve'
