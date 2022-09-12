@@ -437,25 +437,25 @@ stages:
         model_type: random_forest
         random_forest:
           params:
-            n_estimators: 800
+            n_estimators: 80
             max_depth: 10
         seed: 42
     outs:
     - path: eval_plots/plots/roc.json
-      md5: 09e4d24a6a5cb91114322d806415cd06
-      size: 12086
+      md5: 5af1229d150df6590c9a615bb0c1efb4
+      size: 10749
     - path: models/feature_importance.png
-      md5: c8a69d4092759745412bd1c13d01e0f5
-      size: 465064
+      md5: 17fce1d712741f13826e940a0b01c715
+      size: 456797
     - path: models/features.pkl
       md5: 5d8e76df9aa647f8160c3d17fdfc38ed
       size: 8290
     - path: models/metrics.json
-      md5: c78bb7ff37560bdad80a937c208b5870
-      size: 231
+      md5: dea4bdb7a3663ecc4a117dfbb9348f1c
+      size: 230
     - path: models/model.pkl
-      md5: ed439dc795c2d4ec330d352be69dc76f
-      size: 4364785
+      md5: aa04446f804655a820d2335322208798
+      size: 443421
     - path: models/score_distribution.png
-      md5: ad15fe3918209bcbefdcf51405472bdb
-      size: 35805
+      md5: 22c364f68f06ff86aa8e66a40925dc94
+      size: 34405
