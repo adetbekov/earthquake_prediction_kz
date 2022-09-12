@@ -327,8 +327,8 @@ stages:
       md5: d3f1fce283b88b6438b50f3dec561a9e
       size: 14726
     - path: src/preprocess.py
-      md5: 12a5fada8f481a4ca1dd71e8bb3fe738
-      size: 6620
+      md5: fa515911505355526d92918bda847092
+      size: 6622
     params:
       params.yaml:
         preprocess:
@@ -344,17 +344,17 @@ stages:
           mag_max_target_th: 5
     outs:
     - path: artifacts/data.csv
-      md5: c4ff4c59452b30ce5146f040db7ed4ba
-      size: 1628435
+      md5: de3dbe092989ebf68993591b381f55ab
+      size: 1901923
     - path: artifacts/metadata.json
-      md5: 17eaac5b6c134a39a76a0efa4855e494
+      md5: 3b83b3b8f0d2df7fd0736947b23be03e
       size: 1458
   train_test_split:
     cmd: python src/train_test_split.py
     deps:
     - path: artifacts/data.csv
-      md5: c4ff4c59452b30ce5146f040db7ed4ba
-      size: 1628435
+      md5: de3dbe092989ebf68993591b381f55ab
+      size: 1901923
     - path: src/train_test_split.py
       md5: a86ad1a36aac648d6efd6dd0580a6a80
       size: 1247
@@ -367,23 +367,23 @@ stages:
           dropzero_test: false
     outs:
     - path: artifacts/test.csv
-      md5: 41255038262cf22c197aef4763924098
-      size: 398568
+      md5: 3900ed349cb3c2d7f2a90055de358496
+      size: 454339
     - path: artifacts/train.csv
-      md5: df804d3aaf694d2009b21771531de9f0
-      size: 701840
+      md5: e7d5c6a6cd34f1aca5eaa39149b207c5
+      size: 798991
   model@random_forest:
     cmd: python src/model_random_forest.py
     deps:
     - path: artifacts/test.csv
-      md5: 41255038262cf22c197aef4763924098
-      size: 398568
+      md5: 3900ed349cb3c2d7f2a90055de358496
+      size: 454339
     - path: artifacts/train.csv
-      md5: df804d3aaf694d2009b21771531de9f0
-      size: 701840
+      md5: e7d5c6a6cd34f1aca5eaa39149b207c5
+      size: 798991
     - path: src/evaluation.py
-      md5: 1ae1eac3eb5d7516b23efcd99cee62d4
-      size: 1754
+      md5: 05b817f965f4eb37eae7fd51574de024
+      size: 1762
     - path: src/model_random_forest.py
       md5: bcebd83cc2bedafb65a98cfdfb167caa
       size: 2272
@@ -395,21 +395,107 @@ stages:
             max_depth: 10
         seed: 42
     outs:
-    - path: eval_plots/plots/roc.json
-      md5: 6a6a14605b4d8106ef7196f8276a7597
-      size: 7362
+    - path: eval_plots_random_forest/plots/roc.json
+      md5: 06b2f88815f1818e8ab5b1b20c1b8df2
+      size: 7584
     - path: models/features_random_forest.pkl
-      md5: 8f413fe53584706eebbb48ef99261c26
-      size: 7414
+      md5: 5d8e76df9aa647f8160c3d17fdfc38ed
+      size: 8290
     - path: models/fi_random_forest.png
-      md5: c7b9d3b2a253bbb1cd025198676b8230
-      size: 441581
+      md5: 2d72145e4d06c38fb9215e68c5b4a5aa
+      size: 454283
     - path: models/metrics_random_forest.json
-      md5: d882b3e013031dc07cf6a97c1ec1323e
+      md5: 3adbec1108b0424df5a253949162ebc8
       size: 230
     - path: models/model_random_forest.pkl
-      md5: b6ac500b269b361be177099e105ea2bd
-      size: 2960968
+      md5: a149567b509eaaf6d9842d52815a98d5
+      size: 2878450
     - path: models/scordistr_random_forest.png
-      md5: 056d4adc635c4f0fccc4a888d155c13c
-      size: 30956
+      md5: c695a7e20cd4c0ea93bce0897e577a60
+      size: 30957
+  model@lightgbm:
+    cmd: python src/model_lightgbm.py
+    deps:
+    - path: artifacts/test.csv
+      md5: 3900ed349cb3c2d7f2a90055de358496
+      size: 454339
+    - path: artifacts/train.csv
+      md5: e7d5c6a6cd34f1aca5eaa39149b207c5
+      size: 798991
+    - path: src/evaluation.py
+      md5: 05b817f965f4eb37eae7fd51574de024
+      size: 1762
+    - path: src/model_lightgbm.py
+      md5: e9fb9815f1074284247eb95036a18da0
+      size: 2234
+    params:
+      params.yaml:
+        lightgbm:
+          params:
+            n_estimators: 500
+            max_depth: 10
+        seed: 42
+    outs:
+    - path: eval_plots_lightgbm/plots/roc.json
+      md5: fb47a69ff6aad2cc3ea7dd06b5aa7a60
+      size: 9304
+    - path: models/features_lightgbm.pkl
+      md5: 5d8e76df9aa647f8160c3d17fdfc38ed
+      size: 8290
+    - path: models/fi_lightgbm.png
+      md5: 8de16021e73078c0b9d1f3b74dc7c433
+      size: 426912
+    - path: models/metrics_lightgbm.json
+      md5: a63b3ab5ff5cd2f59de54c13318ea659
+      size: 225
+    - path: models/model_lightgbm.pkl
+      md5: 357908dea40efa8161e16b1ccdde9a75
+      size: 438595
+    - path: models/scordistr_lightgbm.png
+      md5: f679b6ffecca66b4f1c5e927aea5a587
+      size: 30916
+  model:
+    cmd: python src/model.py
+    deps:
+    - path: artifacts/test.csv
+      md5: 3900ed349cb3c2d7f2a90055de358496
+      size: 454339
+    - path: artifacts/train.csv
+      md5: e7d5c6a6cd34f1aca5eaa39149b207c5
+      size: 798991
+    - path: src/evaluation.py
+      md5: c08bcc9dddbc59043deb379838f0b6bc
+      size: 1757
+    - path: src/model.py
+      md5: 84725de7b771321288a1211564584df5
+      size: 2660
+    params:
+      params.yaml:
+        lightgbm:
+          params:
+            n_estimators: 500
+            max_depth: 10
+        random_forest:
+          params:
+            n_estimators: 500
+            max_depth: 10
+        seed: 42
+    outs:
+    - path: eval_plots/plots/roc.json
+      md5: 06b2f88815f1818e8ab5b1b20c1b8df2
+      size: 7584
+    - path: models/feature_importance.png
+      md5: d75acb158c22e21264586c61749c0546
+      size: 454000
+    - path: models/features.pkl
+      md5: 5d8e76df9aa647f8160c3d17fdfc38ed
+      size: 8290
+    - path: models/metrics.json
+      md5: 3adbec1108b0424df5a253949162ebc8
+      size: 230
+    - path: models/model.pkl
+      md5: a149567b509eaaf6d9842d52815a98d5
+      size: 2878450
+    - path: models/score_distribution.png
+      md5: c695a7e20cd4c0ea93bce0897e577a60
+      size: 30957

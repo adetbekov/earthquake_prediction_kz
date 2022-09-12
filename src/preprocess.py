@@ -134,7 +134,7 @@ def collect(path, na_strategy, mag_max_target_th, roll_years_agg):
     for i in range(1, 6):
         for n in ["mag", "depth"]:
             for m in agg_funcs:
-                train_cj['{}_{}_ylag'.format(n, m, i)] = train_cj.groupby(["REGION_"])[n+"_"+m].apply(lambda v: v.shift(i))
+                train_cj['{}_{}_{}ylag'.format(n, m, i)] = train_cj.groupby(["REGION_"])[n+"_"+m].apply(lambda v: v.shift(i))
 
     for n in ["mag", "depth"]:
         for m in agg_funcs:

@@ -32,28 +32,26 @@ stages:
             - artifacts/train.csv
             - artifacts/test.csv           
     model:
-        foreach:
+        cmd: python src/model.py
+        params:
+            - lightgbm
             - random_forest
-        do:
-            cmd: python src/model_${item}.py
-            params:
-                - ${item}
-                - seed
-            deps:
-                - src/model_${item}.py
-                - src/evaluation.py
-                - artifacts/train.csv
-                - artifacts/test.csv
-            outs:
-                - models/model_${item}.pkl
-                - models/features_${item}.pkl
-            metrics:
-                - models/metrics_${item}.json:
-                    cache: false
-            plots:
-                - models/fi_${item}.png
-                - models/scordistr_${item}.png
-                - eval_plots/plots/roc.json:
-                    cache: false
-                    x: fpr
-                    y: tpr
+            - seed
+        deps:
+            - src/model.py
+            - src/evaluation.py
+            - artifacts/train.csv
+            - artifacts/test.csv
+        outs:
+            - models/model.pkl
+            - models/features.pkl
+        metrics:
+            - models/metrics.json:
+                cache: false
+        plots:
+            - models/feature_importance.png
+            - models/score_distribution.png
+            - eval_plots/plots/roc.json:
+                cache: false
+                x: fpr
+                y: tpr
