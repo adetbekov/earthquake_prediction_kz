@@ -363,15 +363,15 @@ stages:
         seed: 42
         train_test_split:
           test_size: 0.2
-          dropzero_train: true
+          dropzero_train: false
           dropzero_test: false
     outs:
     - path: artifacts/test.csv
       md5: 3900ed349cb3c2d7f2a90055de358496
       size: 454339
     - path: artifacts/train.csv
-      md5: 624ceb27fb28e76b45c6c52c7fe993c1
-      size: 798991
+      md5: 717044ff86abb3b4e0e0ef06440aebc5
+      size: 1788837
   model@random_forest:
     cmd: python src/model_random_forest.py
     deps:
@@ -420,8 +420,8 @@ stages:
       md5: 3900ed349cb3c2d7f2a90055de358496
       size: 454339
     - path: artifacts/train.csv
-      md5: 624ceb27fb28e76b45c6c52c7fe993c1
-      size: 798991
+      md5: 717044ff86abb3b4e0e0ef06440aebc5
+      size: 1788837
     - path: src/evaluation.py
       md5: c08bcc9dddbc59043deb379838f0b6bc
       size: 1757
@@ -433,7 +433,8 @@ stages:
         lightgbm:
           params:
             n_estimators: 500
-            max_depth: 10
+            max_depth: -1
+        model_type: lightgbm
         random_forest:
           params:
             n_estimators: 500
@@ -441,20 +442,20 @@ stages:
         seed: 42
     outs:
     - path: eval_plots/plots/roc.json
-      md5: 06b2f88815f1818e8ab5b1b20c1b8df2
-      size: 7584
+      md5: 0239ec0f469c580f442ac91894cb1fed
+      size: 8203
     - path: models/feature_importance.png
-      md5: 2d210bcdc3c72ff83faea0a12ff59d55
-      size: 453861
+      md5: 4a820e73b576b6efca8f6e921dfc2eda
+      size: 361067
     - path: models/features.pkl
       md5: 5d8e76df9aa647f8160c3d17fdfc38ed
       size: 8290
     - path: models/metrics.json
-      md5: 3adbec1108b0424df5a253949162ebc8
-      size: 230
+      md5: c8869a8b26d298140404a2a3c5f57202
+      size: 226
     - path: models/model.pkl
-      md5: a149567b509eaaf6d9842d52815a98d5
-      size: 2878450
+      md5: c1155001ec94b93151d9da678452f058
+      size: 1141593
     - path: models/score_distribution.png
-      md5: c695a7e20cd4c0ea93bce0897e577a60
-      size: 30957
+      md5: e2ee3229077cc33e5e49d37d6d36e13f
+      size: 30888

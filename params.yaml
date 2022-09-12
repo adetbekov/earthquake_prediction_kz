@@ -1,5 +1,5 @@
 seed: 42
-model_type: "random_forest"
+model_type: "lightgbm"
 
 collect_data:
     endtime: "2022-09-01"
@@ -18,7 +18,7 @@ preprocess:
 
 train_test_split:
     test_size: 0.2
-    dropzero_train: true # false, true
+    dropzero_train: false # false, true
     dropzero_test: false # true, false
     
 random_forest:
@@ -28,4 +28,4 @@ random_forest:
 lightgbm:
     params:
         n_estimators: 500
-        max_depth: 10
+        max_depth: -1
