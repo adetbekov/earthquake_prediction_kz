@@ -18,8 +18,8 @@ preprocess:
 
 train_test_split:
     test_size: 0.2
-    dropzero_train: true # false, true
-    dropzero_test: false # true, false
+    dropzero_train: false # false, true
+    dropzero_test: true # true, false
     
 random_forest:
     params:
@@ -28,4 +28,4 @@ random_forest:
 lightgbm:
     params:
         n_estimators: 500
-        max_depth: 10
+        max_depth: -1
