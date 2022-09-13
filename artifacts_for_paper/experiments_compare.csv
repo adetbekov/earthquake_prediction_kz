@@ -1,0 +1,28 @@
+Experiment,rev,typ,Created,parent,roc_auc,f1_score,precision,recall,accuracy,thresh,seed,model_type,collect_data.endtime,collect_data.maxlatitude,collect_data.minlatitude,collect_data.maxlongitude,collect_data.minlongitude,collect_data.minmagnitude,target.mag_max_target_th,preprocess.na_strategy,preprocess.roll_years_agg,train_test_split.test_size,train_test_split.dropzero_train,train_test_split.dropzero_test,random_forest.params.n_estimators,random_forest.params.max_depth,lightgbm.params.n_estimators,lightgbm.params.max_depth,svc.params.C,svc.params.kernel,svc.params.degree,svc.params.gamma,svc.params.probability,nn_fc.lr,nn_fc.params.epochs,nn_fc.params.validation_split,artifacts/data.csv,artifacts/test.csv,artifacts/train.csv,data/data.json,data/geocoded_areas.csv,src/collect_data.py,src/evaluation.py,src/model.py,src/preprocess.py,src/train_test_split.py
+,workspace,baseline,,,0.7579811934060832,0.5696969696969698,0.44339622641509435,0.7966101694915254,0.7977207977207977,0.774,42,random_forest,2022-09-01,55.588,40.459,87.012,46.055,0,5,zero,"[3, 
+10, 25, 50, 80, 
+100]",0.3,True,False,800,10,500,-1,,,,,,,,,01f4530,4e98067,5ad43ba,9a0ae13,d3f1fce,629f714,c08bcc9,84725de,fa51591,a86ad1a
+lightgbm,96a9672,baseline,2022-09-12T13:02:41,,0.8014859530996054,0.5874125874125875,0.5,0.711864406779661,0.8319088319088319,0.998,42,lightgbm,2022-09-01,55.588,40.459,87.012,46.055,0,5,zero,"[3, 
+10, 25, 50, 80, 
+100]",0.3,True,False,500,10,800,10,,,,,,,,,01f4530,4e98067,5ad43ba,9a0ae13,d3f1fce,629f714,739f986,84725de,fa51591,a86ad1a
+main,7a84537,baseline,2022-09-12T13:05:58,,0.7579811934060832,0.5696969696969698,0.44339622641509435,0.7966101694915254,0.7977207977207977,0.774,42,random_forest,2022-09-01,55.588,40.459,87.012,46.055,0,5,zero,"[3, 
+10, 25, 50, 80, 
+100]",0.3,True,False,800,10,500,-1,,,,,,,,,01f4530,4e98067,5ad43ba,9a0ae13,d3f1fce,629f714,c08bcc9,84725de,fa51591,a86ad1a
+exp-9b3b3,83541c0,branch_commit,2022-09-13T03:16:01,,0.5363361968887856,0.3731343283582089,0.3333333333333333,0.423728813559322,0.7606837606837606,0.88,42,nn_fc,2022-09-01,55.588,40.459,87.012,46.055,0,5,zero,"[3, 
+10, 25, 50, 80, 
+100]",0.3,True,False,800,10,500,-1,1.0,rbf,3,scale,True,0.001,100,0.3,01f4530,4e98067,5ad43ba,9a0ae13,d3f1fce,629f714,d891fe2,b89837c,fa51591,a86ad1a
+exp-12f2d,139c15e,branch_commit,2022-09-13T01:52:36,,0.5945553749709775,0.4305555555555556,0.36470588235294116,0.5254237288135594,0.7663817663817664,0.766,42,nn_fc,2022-09-01,55.588,40.459,87.012,46.055,0,5,zero,"[3, 
+10, 25, 50, 80, 
+100]",0.3,True,False,800,10,500,-1,1.0,rbf,3,scale,True,,100,,01f4530,4e98067,5ad43ba,9a0ae13,d3f1fce,629f714,d891fe2,697a93c,fa51591,a86ad1a
+exp-240f0,70503b6,branch_commit,2022-09-13T00:51:30,,0.7579811934060832,0.5696969696969698,0.44339622641509435,0.7966101694915254,0.7977207977207977,0.774,42,random_forest,2022-09-01,55.588,40.459,87.012,46.055,0,5,zero,"[3, 
+10, 25, 50, 80, 
+100]",0.3,True,False,800,10,500,-1,1.0,rbf,3,scale,True,,50,,01f4530,4e98067,5ad43ba,9a0ae13,d3f1fce,629f714,d891fe2,d74897e,fa51591,a86ad1a
+exp-d8b62,10ee06a,branch_base,2022-09-13T00:49:45,,0.7579811934060832,0.5696969696969698,0.44339622641509435,0.7966101694915254,0.7977207977207977,0.774,42,random_forest,2022-09-01,55.588,40.459,87.012,46.055,0,5,zero,"[3, 
+10, 25, 50, 80, 
+100]",0.3,True,False,800,10,500,-1,1.0,rbf,3,scale,True,,50,,01f4530,4e98067,5ad43ba,9a0ae13,d3f1fce,629f714,c3c288d,d74897e,fa51591,a86ad1a
+nn_fc,139c15e,baseline,2022-09-13T01:52:36,,0.5945553749709775,0.4305555555555556,0.36470588235294116,0.5254237288135594,0.7663817663817664,0.766,42,nn_fc,2022-09-01,55.588,40.459,87.012,46.055,0,5,zero,"[3, 
+10, 25, 50, 80, 
+100]",0.3,True,False,800,10,500,-1,1.0,rbf,3,scale,True,,100,,01f4530,4e98067,5ad43ba,9a0ae13,d3f1fce,629f714,d891fe2,697a93c,fa51591,a86ad1a
+random_forest,c20c08a,baseline,2022-09-12T13:13:41,,0.7579811934060832,0.5696969696969698,0.44339622641509435,0.7966101694915254,0.7977207977207977,0.774,42,random_forest,2022-09-01,55.588,40.459,87.012,46.055,0,5,zero,"[3, 
+10, 25, 50, 80, 
+100]",0.3,True,False,800,10,500,-1,,,,,,,,,01f4530,4e98067,5ad43ba,9a0ae13,d3f1fce,629f714,c08bcc9,84725de,fa51591,a86ad1a
