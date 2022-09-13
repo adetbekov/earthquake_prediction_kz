@@ -434,9 +434,10 @@ stages:
           params:
             n_estimators: 800
             max_depth: 10
+        model_type: lightgbm
         random_forest:
           params:
-            n_estimators: 500
+            n_estimators: 800
             max_depth: 10
         seed: 42
     outs:
@@ -444,8 +445,8 @@ stages:
       md5: f76764ca7a8ffdb106724e12167e2f74
       size: 12354
     - path: models/feature_importance.png
-      md5: bdefe7ebec1a55c636867e6fdd4f97c7
-      size: 391401
+      md5: 2f1d495d84da00d7611fdb53b4d6027d
+      size: 389379
     - path: models/features.pkl
       md5: 5d8e76df9aa647f8160c3d17fdfc38ed
       size: 8290

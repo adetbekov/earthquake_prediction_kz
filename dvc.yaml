@@ -36,6 +36,7 @@ stages:
         params:
             - lightgbm
             - random_forest
+            - model_type
             - seed
         deps:
             - src/model.py
