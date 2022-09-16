@@ -106,8 +106,6 @@ if __name__ == "__main__":
     
     train_dataset = Dataset("artifacts/train.csv")
     INPUT_DIM = train_dataset.X.shape[1]
-    LR = model_params["learning_rate"]
-    OPTIMIZER = model_params["optimizer"]
     test_dataset = Dataset("artifacts/test.csv", train=False)
     
     if model_type == "lightgbm":
@@ -136,12 +134,6 @@ if __name__ == "__main__":
 #         model = model,
 #         dataset = train_dataset
 #     )
-
-    save_plot(
-        "models/feature_importance.png",
-        lambda p: plt.imread(p),
-        p = "artifacts_for_paper/feature_importance.png"
-    )
     
     # Metircs
     metrics_test = evaluate(

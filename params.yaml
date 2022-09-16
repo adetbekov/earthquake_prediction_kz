@@ -1,5 +1,5 @@
 seed: 42
-model_type: "nn_fc"
+model_type: "svc"
 
 collect_data:
     endtime: "2022-09-01"
@@ -31,9 +31,9 @@ lightgbm:
         max_depth: -1
 svc:
     params:
-        C: 1.0
-        kernel: 'rbf'
-        degree: 3
+        C: 3
+        kernel: 'linear'
+        degree: 4
         gamma: 'scale'
         probability: true
 nn_fc:
