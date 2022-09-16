@@ -1,0 +1,43 @@
+{
+    "initial": {
+        "generated": 1662956875000,
+        "url": "https://earthquake.usgs.gov/fdsnws/event/1/query.geojson?starttime=1800-01-01+00%3A00%3A00&endtime=2022-09-01+00%3A00%3A00&maxlatitude=55.588&minlatitude=40.459&maxlongitude=87.012&minlongitude=46.055&minmagnitude=0&orderby=time",
+        "title": "USGS Earthquakes",
+        "status": 200,
+        "api": "1.13.6",
+        "count": 2844
+    },
+    "type_counts": {
+        "earthquake": 2629,
+        "nuclear explosion": 213,
+        "explosion": 2
+    },
+    "area_counts": {
+        "Алматинская область": 89,
+        "Восточно-Казахстанская область": 48,
+        "Туркестанская область": 25,
+        "Жамбылская область": 13,
+        "Карагандинская область": 9,
+        "Кызылординская область": 4,
+        "Западно-Казахстанская область": 3,
+        "Костанайская область": 1,
+        "Мангистауская область": 1,
+        "Павлодарская область": 1
+    },
+    "region_na_counts": {
+        "false": 2627,
+        "true": 2
+    },
+    "year_boundary": {
+        "min_year": 1906,
+        "max_year": 2022
+    },
+    "target_size": 0.16666666666666666,
+    "zero_mag": 0.6555555555555556,
+    "final": {
+        "shape": [
+            1170,
+            352
+        ]
+    }
+}
