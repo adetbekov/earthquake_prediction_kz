@@ -426,15 +426,20 @@ stages:
       md5: 863a8db62d2c76dce61584e4e687a221
       size: 1865
     - path: src/model.py
-      md5: 8112851d6209d92875fa0d105271eb52
-      size: 4710
+      md5: 4a653122dd4e588cb0f38dc8e69a18bd
+      size: 6551
     params:
       params.yaml:
+        deep_cnn:
+          learning_rate: 0.001
+          optimizer: adam
+          params:
+            epochs: 100
         lightgbm:
           params:
             n_estimators: 500
             max_depth: -1
-        model_type: svc
+        model_type: deep_cnn
         nn_fc:
           learning_rate: 0.0001
           optimizer: sgd
@@ -454,20 +459,20 @@ stages:
             probability: true
     outs:
     - path: eval_plots/plots/confusion_matrix.json
-      md5: 5f3f8d633aa5c4564bb1e4bcecfe5f6c
+      md5: 1bc486f61033f051938e64f1ff4975e4
       size: 22758
     - path: eval_plots/plots/roc.json
-      md5: ee4e28e62a9bba534c4a9bf09271105b
-      size: 11674
+      md5: cd8aa4c0c08b9a962f1dc4bb214c090f
+      size: 10818
     - path: models/features.pkl
       md5: 5d8e76df9aa647f8160c3d17fdfc38ed
       size: 8290
     - path: models/metrics.json
-      md5: e578effb3be77d81afa920f2ad5b7656
-      size: 221
+      md5: 7dbbe69a27165b80bc370fdbd049a261
+      size: 224
     - path: models/model.pkl
-      md5: 6944131775e6e70e55d1b590f8f17600
-      size: 331887
+      md5: 1c0b8dc78f68ba439eff01a2f66cbdcc
+      size: 29361959
     - path: models/score_distribution.png
-      md5: 717df71dcbb4196985786d18b724f9ed
-      size: 25952
+      md5: 00c020379e07815c557f34c5015ce64c
+      size: 24521

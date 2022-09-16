@@ -1,5 +1,5 @@
 seed: 42
-model_type: "svc"
+model_type: "deep_cnn"
 
 collect_data:
     endtime: "2022-09-01"
@@ -39,5 +39,11 @@ svc:
 nn_fc:
     learning_rate: 0.0001
     optimizer: 'sgd'
+    params:
+        epochs: 100 
+        
+deep_cnn:
+    learning_rate: 0.001
+    optimizer: 'adam'
     params:
         epochs: 100 

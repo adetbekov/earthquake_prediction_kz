@@ -38,6 +38,7 @@ stages:
             - random_forest
             - nn_fc
             - svc
+            - deep_cnn
             - model_type
             - seed
         deps:

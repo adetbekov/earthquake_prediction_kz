@@ -11,12 +11,15 @@ import matplotlib.pyplot as plt
 from sklearn.ensemble import RandomForestClassifier
 import lightgbm as lgb
 from sklearn import svm
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Dropout
+from tensorflow.keras.models import Sequential, Model
+from tensorflow.keras.layers import Dense, Dropout, Conv1D, Input, BatchNormalization, AveragePooling1D, Reshape, Multiply, MaxPool1D, Flatten, Activation
 from scikeras.wrappers import KerasClassifier
 from tensorflow.keras import metrics, callbacks
 from tensorflow.keras.utils import set_random_seed
 from tensorflow.keras.optimizers import Adam, SGD
+from tensorflow.keras.activations import swish 
+
+
 
 class Dataset:
     def __init__(self, path, train=True):
@@ -86,11 +89,50 @@ def create_nn_fc():
     model.compile(loss='binary_crossentropy', optimizer=selected_optimizer(learning_rate=LR), metrics=[metrics.AUC()])
     return model
 
+def create_cnn():
+    inp = Input(shape=(INPUT_DIM,))
+    x = BatchNormalization()(inp)
+    x = Dropout(0.2)(x)
+    x = Dense(4096)(x)
+    x = Reshape((256, 16))(x)
+    x = BatchNormalization()(x)
+    x = Dropout(0.1)(x)
+    x = Conv1D(filters = 16, kernel_size = 5, activation = swish, use_bias = False, padding = 'SAME')(x)
+    x = AveragePooling1D(pool_size = 2)(x)
+    xs = x
+    x = BatchNormalization()(x)
+    x = Dropout(0.1)(x)
+    x = Conv1D(filters = 16, kernel_size = 3, activation = swish, use_bias = True, padding = 'SAME')(x)
+    x = BatchNormalization()(x)
+    x = Dropout(0.1)(x)
+    x = Conv1D(filters = 16, kernel_size = 3, activation = swish, use_bias = True, padding = 'SAME')(x)
+    x = Multiply()([x, xs])
+    x = MaxPool1D(pool_size = 4, strides = 2)(x)
+    x = Flatten()(x)
+    x = BatchNormalization()(x)
+    x = Activation(swish)(x)
+    x = Dense(1)(x)
+    out = Activation('sigmoid')(x)
+    model = Model(inputs=inp, outputs=out)
+    # Compile model
+    selected_optimizer = Adam if OPTIMIZER == 'adam' else SGD
+    model.compile(loss='binary_crossentropy', optimizer=selected_optimizer(learning_rate=LR), metrics=[metrics.AUC()])
+    return model
+
 def train_nn_fc(hyperparams, dataset, seed):
     X_train, y_train = dataset.X, dataset.y
     
     callback = callbacks.EarlyStopping(monitor='loss', patience=5)
     clf = KerasClassifier(model=create_nn_fc, callbacks=[callback], **hyperparams)
+    clf.fit(X_train, y_train)
+    
+    return clf, X_train.columns
+
+def train_cnn(hyperparams, dataset, seed):
+    X_train, y_train = dataset.X, dataset.y
+    
+    callback = callbacks.EarlyStopping(monitor='loss', patience=5)
+    clf = KerasClassifier(model=create_cnn, callbacks=[callback], **hyperparams)
     clf.fit(X_train, y_train)
     
     return clf, X_train.columns
@@ -103,6 +145,9 @@ if __name__ == "__main__":
     
     model_type = params['model_type']
     model_params = params[f"{model_type}"]
+    
+    OPTIMIZER = model_params['optimizer']
+    LR = model_params['learning_rate']
     
     train_dataset = Dataset("artifacts/train.csv")
     INPUT_DIM = train_dataset.X.shape[1]
@@ -119,6 +164,9 @@ if __name__ == "__main__":
         fi_func = feature_importance_kernel
     elif model_type == "nn_fc":
         train_func = train_nn_fc
+        fi_func = feature_importance_kernel
+    elif model_type == "deep_cnn":
+        train_func = train_cnn
         fi_func = feature_importance_kernel
     
     model, features = train_func(
