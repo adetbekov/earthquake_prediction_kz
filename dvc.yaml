@@ -36,6 +36,7 @@ stages:
         params:
             - lightgbm
             - random_forest
+            - nn_fc
             - model_type
             - seed
         deps:
@@ -56,3 +57,11 @@ stages:
                 cache: false
                 x: fpr
                 y: tpr
+            - eval_plots/plots/confusion_matrix.json:
+                cache: false
+                x: predicted
+                y: actual
+                title: confusion matrix
+                template: confusion
+                x_label: Predicted class
+                y_label: Actual class
