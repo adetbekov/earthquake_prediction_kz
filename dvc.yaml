@@ -37,6 +37,7 @@ stages:
             - lightgbm
             - random_forest
             - nn_fc
+            - svc
             - model_type
             - seed
         deps:
@@ -51,7 +52,6 @@ stages:
             - models/metrics.json:
                 cache: false
         plots:
-            - models/feature_importance.png
             - models/score_distribution.png
             - eval_plots/plots/roc.json:
                 cache: false
