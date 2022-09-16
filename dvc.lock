@@ -423,11 +423,11 @@ stages:
       md5: 5ad43ba8bac391f0ea3788a6cca5f2b9
       size: 702809
     - path: src/evaluation.py
-      md5: d891fe2b79f485cf3463768e728feaa8
-      size: 1799
+      md5: 863a8db62d2c76dce61584e4e687a221
+      size: 1865
     - path: src/model.py
-      md5: 697a93cbf58edc00efe653542d85fab1
-      size: 4519
+      md5: b5ca2f7501e594b6d7a74944a614f936
+      size: 4944
     params:
       params.yaml:
         lightgbm:
@@ -435,27 +435,35 @@ stages:
             n_estimators: 500
             max_depth: -1
         model_type: nn_fc
+        nn_fc:
+          learning_rate: 0.0001
+          optimizer: sgd
+          params:
+            epochs: 100
         random_forest:
           params:
             n_estimators: 800
             max_depth: 10
         seed: 42
     outs:
+    - path: eval_plots/plots/confusion_matrix.json
+      md5: f837223b92b4f4968751240434369464
+      size: 22758
     - path: eval_plots/plots/roc.json
-      md5: 7952595a6af7af47d022d85a9d45667e
-      size: 9706
+      md5: 09a5829aeb711989390932d63b1c71ff
+      size: 10964
     - path: models/feature_importance.png
-      md5: 14bde6d72cd34fd1faa965b637661e8a
-      size: 375039
+      md5: ae738b5c7cd90c245a45f47171d73172
+      size: 8361
     - path: models/features.pkl
       md5: 5d8e76df9aa647f8160c3d17fdfc38ed
       size: 8290
     - path: models/metrics.json
-      md5: 0255b9312947ae9a6a052a9d872d3531
-      size: 223
+      md5: a166ed7535c2eeaad734cd585dc032d3
+      size: 222
     - path: models/model.pkl
-      md5: 86427aeac9fa032b7a72c7c1e8396b9c
-      size: 4738872
+      md5: 46f53095f65d4a3f9ac7053a17d0a9ae
+      size: 1057328
     - path: models/score_distribution.png
-      md5: 649ceebdaff179509eaa6db6aa0bed8a
-      size: 34312
+      md5: 12d1b34a009577f5fb74b06476612c53
+      size: 24455

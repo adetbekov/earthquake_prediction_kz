@@ -12,10 +12,11 @@ from sklearn.ensemble import RandomForestClassifier
 import lightgbm as lgb
 from sklearn import svm
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense
+from tensorflow.keras.layers import Dense, Dropout
 from scikeras.wrappers import KerasClassifier
 from tensorflow.keras import metrics, callbacks
 from tensorflow.keras.utils import set_random_seed
+from tensorflow.keras.optimizers import Adam, SGD
 
 class Dataset:
     def __init__(self, path, train=True):
@@ -78,9 +79,11 @@ def create_nn_fc():
     model.add(Dense(500, input_dim=INPUT_DIM, activation='relu'))
     model.add(Dense(100, activation='relu'))
     model.add(Dense(50, activation='relu'))
+    model.add(Dropout(0.4))
     model.add(Dense(1, activation='sigmoid'))
     # Compile model
-    model.compile(loss='binary_crossentropy', optimizer='adam', metrics=[metrics.AUC()])
+    selected_optimizer = Adam if OPTIMIZER == 'adam' else SGD
+    model.compile(loss='binary_crossentropy', optimizer=selected_optimizer(learning_rate=LR), metrics=[metrics.AUC()])
     return model
 
 def train_nn_fc(hyperparams, dataset, seed):
@@ -103,6 +106,8 @@ if __name__ == "__main__":
     
     train_dataset = Dataset("artifacts/train.csv")
     INPUT_DIM = train_dataset.X.shape[1]
+    LR = model_params["learning_rate"]
+    OPTIMIZER = model_params["optimizer"]
     test_dataset = Dataset("artifacts/test.csv", train=False)
     
     if model_type == "lightgbm":
@@ -125,11 +130,17 @@ if __name__ == "__main__":
     )
     
     # Imp
+#     save_plot(
+#         f"models/feature_importance.png",
+#         fi_func,
+#         model = model,
+#         dataset = train_dataset
+#     )
+
     save_plot(
-        f"models/feature_importance.png",
-        fi_func,
-        model = model,
-        dataset = train_dataset
+        "models/feature_importance.png",
+        lambda p: plt.imread(p),
+        p = "artifacts_for_paper/feature_importance.png"
     )
     
     # Metircs
