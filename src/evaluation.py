@@ -39,6 +39,8 @@ def evaluate(name, model, features, dataset):
     live.log("auc", roc_auc)
     thresh, f1 = get_optimal_threshold(model, dataset.df, features, "TARGET")
     
+    live.log_plot("confusion_matrix", y, 1*(pred >= thresh))
+    
     precision = metrics.precision_score(y, 1*(pred >= thresh))
     recall = metrics.recall_score(y, 1*(pred >= thresh))
     accuracy = metrics.accuracy_score(y, 1*(pred >= thresh))
