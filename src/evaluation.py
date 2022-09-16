@@ -43,12 +43,13 @@ def evaluate(name, model, features, dataset):
     recall = metrics.recall_score(y, 1*(pred >= thresh))
     accuracy = metrics.accuracy_score(y, 1*(pred >= thresh))
     
+    live.log_plot("confusion_matrix", y, 1*(pred >= thresh))
+    
     save_plot(
         f"models/score_distribution.png",
         lambda pred: plt.hist(pred, bins=40),
         pred = pred
     )
-   
     
     
     return {

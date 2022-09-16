@@ -56,3 +56,11 @@ stages:
                 x: fpr
                 y: tpr
                 title: 'ROC Curve'
+            - eval_plots/plots/confusion_matrix.json:
+                cache: false
+                x: predicted
+                y: actual
+                title: confusion matrix
+                template: confusion
+                x_label: Predicted class
+                y_label: Actual class

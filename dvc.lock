@@ -423,8 +423,8 @@ stages:
       md5: 5ad43ba8bac391f0ea3788a6cca5f2b9
       size: 702809
     - path: src/evaluation.py
-      md5: 739f986369a6ffb4d83b81a3dad8c705
-      size: 1757
+      md5: fbf7a05da5f026c004bba3e8cdfe86ef
+      size: 1819
     - path: src/model.py
       md5: 84725de7b771321288a1211564584df5
       size: 2660
@@ -440,12 +440,15 @@ stages:
             max_depth: 10
         seed: 42
     outs:
+    - path: eval_plots/plots/confusion_matrix.json
+      md5: 294115d6ffa0390c089337bc79d84628
+      size: 22758
     - path: eval_plots/plots/roc.json
       md5: f76764ca7a8ffdb106724e12167e2f74
       size: 12354
     - path: models/feature_importance.png
-      md5: bdefe7ebec1a55c636867e6fdd4f97c7
-      size: 391401
+      md5: e2571d01e4ff65cc451babf9fdc86a2c
+      size: 389684
     - path: models/features.pkl
       md5: 5d8e76df9aa647f8160c3d17fdfc38ed
       size: 8290
